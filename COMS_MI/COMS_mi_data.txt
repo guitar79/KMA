@@ -1,0 +1,9 @@
+/COMS_MI/le1b/a/vis/2017 complete
+
+/COMS_MI/le1b/a/ir1/2017 complete
+
+/COMS_MI/le1b/a/ir2/2017 complete
+
+/COMS_MI/le1b/a/swir/2017 complete
+
+/COMS_MI/le1b/a/wb/2017 complete
