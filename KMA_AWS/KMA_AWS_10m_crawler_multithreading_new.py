@@ -1,7 +1,7 @@
 """
 @author: guitar79@naver.com, yyyyy@snu.ac.kr
 view-source:http://www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?201008262022&0&MINDB_01M&0&a
-www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?201708270810&0&MINDB_10M&0&m
+www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?201708270810&0&MINDB_60M&0&a
 """
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -27,9 +27,9 @@ class crawler():
 		self.output = ''
 
 	def fetch(self):
-		my_file = Path(prefix + '_%d%02d%02d%02d%02d.csv' % (self.year, self.month, self.day, self.hour, self.minute))
+		my_file = Path('%d/%s_%d%02d%02d%02d%02d.csv' % (self.year, prefix, self.year, self.month, self.day, self.hour, self.minute))
 		if my_file.is_file(): # csv file already exists in my folder
-			print ('File exists ' + prefix + '_%d%02d%02d%02d%02d.csv' % (self.year, self.month, self.day, self.hour, self.minute))
+			print ('File exists %d/%s_%d%02d%02d%02d%02d.csv' % (self.year, prefix, self.year, self.month, self.day, self.hour, self.minute))
 		else:	
 			while True:
 				try:
@@ -47,7 +47,7 @@ class crawler():
 						#csv delimeter
 						self.output += '\n'
 					#open output file
-					with open(prefix + '_%d%02d%02d%02d%02d.csv' % (self.year, self.month, self.day, self.hour, self.minute), 'w') as f:
+					with open('%d/%s_%d%02d%02d%02d%02d.csv' % (self.year, prefix, self.year, self.month, self.day, self.hour, self.minute), 'w') as f:
 						#write
 						f.write(self.output)
 					break
@@ -73,7 +73,7 @@ class crawler_month(threading.Thread):
 
 
 threadno = 0
-for year in range(2015,2016):
+for year in range(2010,2018):
 	for Mo in range(1,13):
 		for Da in range(1,32):
 			cmonth = crawler_month(year, Mo, Da, threadno)
