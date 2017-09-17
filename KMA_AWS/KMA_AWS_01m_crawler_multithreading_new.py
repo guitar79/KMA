@@ -28,9 +28,9 @@ class crawler():
 		self.threadno = threadno
 
 	def fetch(self):
-		my_file = Path(prefix + '_%d%02d%02d%02d%02d.csv' % (self.year, self.month, self.day, self.hour, self.minute))
+		my_file = Path('%d/%s_%d%02d%02d%02d%02d.csv' % (self.year, prefix, self.year, self.month, self.day, self.hour, self.minute))
 		if my_file.is_file(): # csv file already exists in my folder
-			print ('File exists ' + prefix + '_%d%02d%02d%02d%02d.csv' % (self.year, self.month, self.day, self.hour, self.minute))
+			print ('File exists %d/%s_%d%02d%02d%02d%02d.csv' % (self.year, prefix, self.year, self.month, self.day, self.hour, self.minute))
 		else:	
 			while True:
 				try:
@@ -48,7 +48,7 @@ class crawler():
 						#csv delimeter
 						self.output += '\n'
 					#open output file
-					with open(prefix + '_%d%02d%02d%02d%02d.csv' % (self.year, self.month, self.day, self.hour, self.minute), 'w') as f:
+					with open('%d/%s_%d%02d%02d%02d%02d.csv' % (self.year, prefix, self.year, self.month, self.day, self.hour, self.minute), 'w') as f:
 						#write
 						f.write(self.output)
 					break
@@ -75,7 +75,7 @@ class crawler_month(threading.Thread):
 
 
 threadno = 0
-for year in range(2010,2012):
+for year in range(2007,2017):
 	for Mo in range(1,13):
 		for Da in range(1,32):
 			cmonth = crawler_month(year, Mo, Da, threadno)
