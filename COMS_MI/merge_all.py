@@ -42,3 +42,17 @@ for i in sorted(os.listdir(drbase+drin)):
 				os.makedirs('%sa/all/2016/' %(drbase))
 			new_im.save(drbase+'a/all/2016/coms_mi_le1b_all_a_2016'+i[-12:])
 			print('created coms_mi_le1b_all_a_2016'+i[-12:])
+'''
+created coms_mi_le1b_all_a_201601082200.png
+starting 201601082215.png
+Traceback (most recent call last):
+  File "merge_all.py", line 38, in <module>
+    new_im.paste(im, (1500*k,1300*j))
+  File "/home/guitar79/anaconda3/lib/python3.6/site-packages/PIL/Image.py", line 1340, in paste
+    im.load()
+  File "/home/guitar79/anaconda3/lib/python3.6/site-packages/PIL/ImageFile.py", line 253, in load
+    raise_ioerror(err_code)
+  File "/home/guitar79/anaconda3/lib/python3.6/site-packages/PIL/ImageFile.py", line 59, in raise_ioerror
+    raise IOError(message + " when reading image file")
+OSError: broken data stream when reading image file
+'''
