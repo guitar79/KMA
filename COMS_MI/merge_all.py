@@ -11,25 +11,35 @@ import os
 from pathlib import Path
 from PIL import Image
 
+#area = [cf, cn, a, k, lk]
+area = "a"
+#chl = [vis, ir1, ir2, swir, wv, com]
+chl = "ir1"
+#year = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017]
+yr = "2016"
+
 #drbase = '/media/guitar79/8T/RS_data/COMS_MI/le1b/'
 drbase = '/run/user/1000/gvfs/smb-share:server=parksrne.local,share=rs_data/COMS_mi/le1b/'
-drin = 'a/ir1/2016/'
-dummy_im = Image.open(drbase+'a/dummy.png');
+
+drin = '%s/%s/%s/' %(area, chl, yr)
+
+dummy_im = Image.open(drbase+area+'/dummy.png');
 
 for i in sorted(os.listdir(drbase+drin)):
 	if i[-4:] == '.png':
-		my_file = Path(drbase+'a/all/2016/coms_mi_le1b_all_a_2016'+i[-12:])
+		my_file = Path('%s%s/all/%s/coms_mi_le1b_all_%s_%s%s' %(drbase, area, yr, area, yr, i[-12:]))
 		if my_file.is_file(): # image file already exists in my folder
-			print ('File exists coms_mi_le1b_all_a_2016'+i[-12:])
+			print ('File exists coms_mi_le1b_all_%s_%s%s' %(area, yr, i[-12:]))
 		else:
-			list_im = [drbase+'a/vis/2016/coms_mi_le1b_vis_a_2016'+i[-12:],\
-				drbase+'a/swir/2016/coms_mi_le1b_swir_a_2016'+i[-12:],\
-				drbase+'a/com/2016/coms_mi_le1b_com_a_2016'+i[-12:],\
-				drbase+'a/ir1/2016/coms_mi_le1b_ir1_a_2016'+i[-12:],\
-				drbase+'a/ir2/2016/coms_mi_le1b_ir2_a_2016'+i[-12:],\
-				drbase+'a/wv/2016/coms_mi_le1b_wv_a_2016'+i[-12:]]
+			list_im = ['%s%s/vis/%s/coms_mi_le1b_vis_%s_%s%s' %(drbase, area, yr, area, yr, i[-12:]),\
+				'%s%s/swir/%s/coms_mi_le1b_swir_%s_%s%s' %(drbase, area, yr, area, yr, i[-12:]),\
+				'%s%s/com/%s/coms_mi_le1b_com_%s_%s%s' %(drbase, area, yr, area, yr, i[-12:]),\
+				'%s%s/ir1/%s/coms_mi_le1b_ir1_%s_%s%s' %(drbase, area, yr, area, yr, i[-12:]),\
+				'%s%s/ir2/%s/coms_mi_le1b_ir2_%s_%s%s' %(drbase, area, yr, area, yr, i[-12:]),\
+				'%s%s/wv/%s/coms_mi_le1b_wv_%s_%s%s' %(drbase, area, yr, area, yr, i[-12:])]
+
 			new_im=Image.new('RGB', (4500,2600)) #creates a new empty image, RGB mode, and size 4500 by 2600
-			print('starting 2016'+i[-12:])
+			print('starting %s%s' %(yr,i[-12:]))
 			for k in range(0,3):
 				for j in range(0,2):
 					t=2*k+j;
@@ -38,21 +48,7 @@ for i in sorted(os.listdir(drbase+drin)):
 						new_im.paste(im, (1500*k,1300*j))
 					else:
 						new_im.paste(dummy_im, (1500*k,1300*j));
-			if not os.path.exists(drbase+'a/all/2016/'):
-				os.makedirs('%sa/all/2016/' %(drbase))
-			new_im.save(drbase+'a/all/2016/coms_mi_le1b_all_a_2016'+i[-12:])
-			print('created coms_mi_le1b_all_a_2016'+i[-12:])
-'''
-created coms_mi_le1b_all_a_201601082200.png
-starting 201601082215.png
-Traceback (most recent call last):
-  File "merge_all.py", line 38, in <module>
-    new_im.paste(im, (1500*k,1300*j))
-  File "/home/guitar79/anaconda3/lib/python3.6/site-packages/PIL/Image.py", line 1340, in paste
-    im.load()
-  File "/home/guitar79/anaconda3/lib/python3.6/site-packages/PIL/ImageFile.py", line 253, in load
-    raise_ioerror(err_code)
-  File "/home/guitar79/anaconda3/lib/python3.6/site-packages/PIL/ImageFile.py", line 59, in raise_ioerror
-    raise IOError(message + " when reading image file")
-OSError: broken data stream when reading image file
-'''
+			if not os.path.exists('%s%s/all/%s/' %(drbase, area, yr)):
+				os.makedirs('%s%s/all/%s/' %(drbase, area,yr))
+			new_im.save('%s%s/all/%s/coms_mi_le1b_all_%s_%s%s' %(drbase, area, yr, area, yr, i[-12:]))
+			print('created coms_mi_le1b_all_%s_%s%s' %(area, yr, i[-12:]))
