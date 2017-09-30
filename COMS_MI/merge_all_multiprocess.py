@@ -55,13 +55,12 @@ for i in sorted(os.listdir(drbase+drin)):
 				'%s%s/ir1/%s/coms_mi_le1b_ir1_%s_%s%s' %(drbase, area, yr, area, yr, i[-12:]),\
 				'%s%s/ir2/%s/coms_mi_le1b_ir2_%s_%s%s' %(drbase, area, yr, area, yr, i[-12:]),\
 				'%s%s/wv/%s/coms_mi_le1b_wv_%s_%s%s' %(drbase, area, yr, area, yr, i[-12:])]
-
+        
+        Q = Queue();
         p = Process(target=Create_image)
         p.start();
         Q.append(p)
-        new_im = Create_image(list_im)
-
-Q = Queue();
+        #new_im = Create_image(list_im)
 
     
-                
+               
