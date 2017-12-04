@@ -48,30 +48,56 @@ conn= pymysql.connect(host=db_host, user=db_user, password=db_pass, db=db_name,\
                       charset='utf8mb4', local_infile=1, cursorclass=pymysql.cursors.DictCursor)
 
 cur = conn.cursor()
+#delete all data in the table
 print("TRUNCATE TABLE %s;" %(tb_name))
 cur.execute("TRUNCATE TABLE %s;" %(tb_name))
 conn.commit()
-finish_rows = 0
+
+#log file
+insert_log = open(drbase+'60min_insert_result.log', 'a')
+error_log = open(drbase+'60min_insert_error.log', 'a')
+
 #read the list of csv files
-for year in range(2007,2008):
+for year in range(2007,2017):
+    #if not os.path.exists(drbase+str(year)+"/inserted"):
+        #os.makedirs(drbase+str(year)+"/inserted")
+        
     for i in sorted(os.listdir(drbase+str(year)+"/")):
-        #read csv files
-        if i[-4:] == '.csv':
-            read_file = open(drbase+str(year)+"/"+i,'r')
-            raw_lists = read_file.read()
-            #print(raw_lists)
-            raw_lists = raw_lists.split('\n')
-            for j in range(1,(len(raw_lists)-1)):
-                #print(raw_lists[j])
-                row = raw_lists[j].split(',')
-                #print(row)
-                '''
-                print("INSERT INTO %s.%s\
+        try :
+            #read csv files
+            if i[-4:] == '.csv':
+                read_file = open(drbase+str(year)+"/"+i,'r')
+                raw_lists = read_file.read()
+                #print(raw_lists)
+                raw_lists = raw_lists.split('\n')
+                for j in range(1,(len(raw_lists)-1)):
+                    #print(raw_lists[j])
+                    row = raw_lists[j].split(',')
+                    #print(row)
+                    '''
+                    print("INSERT INTO %s.%s\
+                              (`id`, `ocode`, `otime`, `oname`, `preci_now`, \
+                              `preci_15`, `preci_60`, `preci_6H`, `preci_12H`, `preci_24H`, \
+                              `temperature`, `wind_deg1`, `wind_dir1`, `wind_spd1`, `wind_deg10`, \
+                              `wind_dir10`, `wind_spd10`, `RH`, `Air_P`) \
+                              VALUES ('NULL', %s, %s, 'NULL', '%s', \
+                              '%s', '%s', '%s', '%s', '%s', \
+                              '%s', '%s', '%s', '%s', '%s', \
+                              '%s', '%s', '%s', '%s');"\
+                              %(db_name, tb_name, \
+                                row[0], i[-16:-4], row[3], \
+                                row[4], row[5], row[6], row[7], row[8], \
+                                row[9], row[10], row[11], row[12], row[13], \
+                                row[14], row[15], row[16], row[17]))
+                    '''
+                    print(i,j)
+                    
+                    cur.execute("INSERT INTO %s.%s\
                           (`id`, `ocode`, `otime`, `oname`, `preci_now`, \
                           `preci_15`, `preci_60`, `preci_6H`, `preci_12H`, `preci_24H`, \
                           `temperature`, `wind_deg1`, `wind_dir1`, `wind_spd1`, `wind_deg10`, \
                           `wind_dir10`, `wind_spd10`, `RH`, `Air_P`) \
-                          VALUES ('NULL', %s, %s, 'NULL', '%s', \
+                          VALUES ('NULL', '%s', '%s', 'NULL', '%s', \
                           '%s', '%s', '%s', '%s', '%s', \
                           '%s', '%s', '%s', '%s', '%s', \
                           '%s', '%s', '%s', '%s');"\
@@ -80,30 +106,21 @@ for year in range(2007,2008):
                             row[4], row[5], row[6], row[7], row[8], \
                             row[9], row[10], row[11], row[12], row[13], \
                             row[14], row[15], row[16], row[17]))
-                '''
-                print(i,j)
-                
-                cur.execute("INSERT INTO %s.%s\
-                      (`id`, `ocode`, `otime`, `oname`, `preci_now`, \
-                      `preci_15`, `preci_60`, `preci_6H`, `preci_12H`, `preci_24H`, \
-                      `temperature`, `wind_deg1`, `wind_dir1`, `wind_spd1`, `wind_deg10`, \
-                      `wind_dir10`, `wind_spd10`, `RH`, `Air_P`) \
-                      VALUES ('NULL', '%s', '%s', 'NULL', '%s', \
-                      '%s', '%s', '%s', '%s', '%s', \
-                      '%s', '%s', '%s', '%s', '%s', \
-                      '%s', '%s', '%s', '%s');"\
-                      %(db_name, tb_name, \
-                        row[0], i[-16:-4], row[3], \
-                        row[4], row[5], row[6], row[7], row[8], \
-                        row[9], row[10], row[11], row[12], row[13], \
-                        row[14], row[15], row[16], row[17]))
-                conn.commit()
-                os.rename(drbase+str(year)+"/"+i, drbase+str(year)+"/"+i+".inserted")
+                    conn.commit()
+                #os.rename(drbase+str(year)+"/"+i, drbase+str(year)+"/inserted/"+i)
+                insert_log.write(drbase+str(year)+"/"+i+" is inserted to the %s - %s, %s\n"\
+                         %(tb_name, datetime.now(), j))
+            
+        except :
+            error_log.write(drbase+str(year)+"/"+i+" is error : %s - %s\n"\
+                             %(tb_name, datetime.now()))
+insert_log.close()
+error_log.close()
 cur.close()
 
 end_time = str(datetime.now())
 print("start : "+ start_time+" end: "+end_time)
-print(finish_rows)
+
 
 '''
  aa=a.split(']')
