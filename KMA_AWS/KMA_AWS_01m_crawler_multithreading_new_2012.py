@@ -75,7 +75,7 @@ class crawler_month(threading.Thread):
 
 
 threadno = 0
-for year in range(2008,2009):
+for year in range(2012,2013):
 	for Mo in range(1,13):
 		for Da in range(1,32):
 			cmonth = crawler_month(year, Mo, Da, threadno)

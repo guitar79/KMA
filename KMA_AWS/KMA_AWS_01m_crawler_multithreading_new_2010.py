@@ -34,7 +34,7 @@ class crawler():
 		else:	
 			while True:
 				try:
-					url = "http://www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?%d%02d%02d%02d%02d&0&MINDB_01M&0&1" % (self.year, self.month, self.day, self.hour, self.minute)
+					url = "http://www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?%d%02d%02d%02d%02d&0&MINDB_01M&0&a" % (self.year, self.month, self.day, self.hour, self.minute)
 					soup = BeautifulSoup(urlopen(url), "html.parser")
 					mytable = soup.find_all('table')
 					#mytable = soup.find_all('table')

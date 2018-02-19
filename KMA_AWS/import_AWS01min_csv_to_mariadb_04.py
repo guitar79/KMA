@@ -38,10 +38,10 @@ db_host = '10.114.0.121'
 db_user = 'modis'
 db_pass = 'rudrlrhkgkrrh'
 db_name = 'KMA_AWS'
-tb_name = '10min_vc'
+tb_name = '01min_vc'
 
 #base directory
-drbase = '/media/guitar79/8T/KMA_AWS/10min/'
+drbase = '/media/guitar79/8T/KMA_AWS/01min/'
 #query_file='sql.txt'
 #db connect
 conn= pymysql.connect(host=db_host, user=db_user, password=db_pass, db=db_name,\
