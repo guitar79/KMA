@@ -2,6 +2,7 @@
 @author: guitar79@naver.com, yyyyy@snu.ac.kr
 view-source:http://www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?201008262022&0&MINDB_01M&0&a
 www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?201708270810&0&MINDB_10M&0&m
+http://www.weather.go.kr/weather/observation/aws_table_popup.jsp
 """
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -43,32 +44,10 @@ class crawler():
             for j in range(1,(len(raw_lists)-1)):
                 #print(raw_lists[j])
                 row = raw_lists[j].split(',')
-                if len(row) < 3 or len(row) > 100 : 
+                if len(row) < 8 or len(row) > 100 : 
                     er = 100
                 elif row[6]=='.' : er = er + 1
 
-            if er > 40 :
-                print ('delete and redownloading the File %s----------\n' % (f))
-                os.remove('%d/%s_%d%02d%02d%02d%02d.csv' % (self.year, prefix, self.year, self.month, self.day, self.hour, self.minute))
-            
-                try:
-                    url = "http://www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?%d%02d%02d%02d%02d&0&MINDB_01M&0&a" % (self.year, self.month, self.day, self.hour, self.minute)
-                    soup = BeautifulSoup(urlopen(url), "html.parser")
-                    mytable = soup.find_all('table')
-                    #mytable = soup.find_all('table')
-                    #only mytable[1] contains weather data
-                    for trs in mytable[1].find_all('tr'):
-                        for tds in trs.find_all('td'):
-                            #print data
-                            self.output += tds.text
-                            #csv delimeter
-                            self.output += ','
-                        #csv delimeter
-                        self.output += '\n'
-                    #open output file
-                    with open('%d/%s_%d%02d%02d%02d%02d.csv' % (self.year, prefix, self.year, self.month, self.day, self.hour, self.minute), 'w') as f:
-                        #write
-                        f.write(self.output)
 
                 except:
                     sys.stderr.write("Thread #%d failed...retry\n" % self.threadno)
@@ -79,7 +58,7 @@ class crawler():
         else:	
             while True:
                 try:
-                    url = "http://www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?%d%02d%02d%02d%02d&0&MINDB_01M&0&a" % (self.year, self.month, self.day, self.hour, self.minute)
+                    url = "http://www.weather.go.kr/cgi-bin/aws/nph-aws_txt_min?%d%02d%02d%02d%02d&0&MINDB_01M&0&a" % (self.year, self.month, self.day, self.hour, self.minute)
                     soup = BeautifulSoup(urlopen(url), "html.parser")
                     mytable = soup.find_all('table')
                     #mytable = soup.find_all('table')
@@ -90,9 +69,9 @@ class crawler():
                             self.output += tds.text
                             #csv delimeter
                             self.output += ','
-                        #csv delimeter
+                            #csv delimeter
                         self.output += '\n'
-                    #open output file
+                            #open output file
                     with open('%d/%s_%d%02d%02d%02d%02d.csv' % (self.year, prefix, self.year, self.month, self.day, self.hour, self.minute), 'w') as f:
                         #write
                         f.write(self.output)
@@ -120,7 +99,7 @@ class crawler_month(threading.Thread):
 
 
 threadno = 0
-for year in range(2007,2011):
+for year in range(2007,2008):
 	for Mo in range(1,13):
 		for Da in range(1,32):
 			cmonth = crawler_month(year, Mo, Da, threadno)
