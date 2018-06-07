@@ -1,6 +1,9 @@
 """
 @author: guitar79@naver.com, yyyyy@snu.ac.kr
 view-source:http://www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?201008262022&0&MINDB_01M&0&a
+
+http://www.weather.go.kr/cgi-bin/aws/nph-aws_txt_min?201608262022&MINDB_01M&a
+
 www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?201708270810&0&MINDB_10M&0&m
 """
 from urllib.request import urlopen
