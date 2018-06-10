@@ -7,7 +7,7 @@ from time import sleep
 driver=webdriver.Chrome()
 
 #페이지 URL
-driver.get('https://data.kma.go.kr/data/grnd/selectAsosList.do?pgmNo=35')
+driver.get('https://data.kma.go.kr/data/grnd/selectAsosList.do?pgmNo=34')
 
 #log=driver.find_element_by_id('loginBtn')
 #로그인
@@ -28,13 +28,13 @@ box.click()
 ActionChains(driver).send_keys(Keys.END).send_keys(Keys.RETURN).perform()
 sleep(1)
 
-#검색 클릭 btn-area text-center
+#검색 클릭
 search=driver.find_element_by_css_selector('#schForm > div.btn-area.text-center > a:nth-child(1)')
 search.click()
 sleep(1)
 
-#에러가 생긴 경우 다음 10페이지 부터 받기 위해 10페이지씩 이동
-for j in range(0,1):
+#에러가 생긴 경우 다음 10페이지 부터 받기 위해 10페이지 이동
+for j in range(0,2):
     if j > 0 :
         next_ten_page=driver.find_element_by_css_selector('#content > div.boardWrap > div > div.pagination.pagination-small > ul > li:nth-child(13) > a')
         next_ten_page.click()
@@ -42,7 +42,7 @@ for j in range(0,1):
     start = j
     print ('%s*10 - page passed ++++++++++\n' % (start))
 
-for ii in range(start,131):
+for ii in range(start,28):
     for i in range(1,11):
         #다음 페이지로 이동
         next_page=driver.find_element_by_css_selector('#content > div.boardWrap > div > div.pagination.pagination-small > ul > li:nth-child(%s) > a' %(i+2))
