@@ -34,13 +34,13 @@ search.click()
 sleep(1)
 
 #에러가 생긴 경우 다음 10페이지 부터 받기 위해 10페이지 이동
-for j in range(0,2):
+for j in range(0,3):
     if j > 0 :
         next_ten_page=driver.find_element_by_css_selector('#content > div.boardWrap > div > div.pagination.pagination-small > ul > li:nth-child(13) > a')
         next_ten_page.click()
         sleep(1)
     start = j
-    print ('%s*10 - page passed ++++++++++\n' % (start))
+    print ('starting download %s*10 - pages ++++++++++\n' % (start))
 
 for ii in range(start,28):
     for i in range(1,11):
