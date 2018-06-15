@@ -34,7 +34,7 @@ search.click()
 sleep(1)
 
 #에러가 생긴 경우 다음 10페이지 부터 받기 위해 10페이지 이동
-for j in range(0,2):
+for j in range(0,1):
     if j > 0 :
         next_ten_page=driver.find_element_by_css_selector('#content > div.boardWrap > div > div.pagination.pagination-small > ul > li:nth-child(13) > a')
         next_ten_page.click()
